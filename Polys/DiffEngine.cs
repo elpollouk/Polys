@@ -6,7 +6,7 @@ namespace Polys
         static int FindVariableIndex(string expression)
         {
             for (var i = 0; i < expression.Length; i++)
-                if (expression[i] < '0' || expression[i] > '9') return i; 
+                if (expression[i] > '9') return i; 
 
             return expression.Length;
         }
@@ -15,7 +15,8 @@ namespace Polys
         {
             var parts = expression.Split('^');
             var other = parts[0];
-            var power = (parts.Length != 1) ? parts[1] : "1";
+            var strPower = (parts.Length != 1) ? parts[1] : "1";
+            var iPower = int.Parse(strPower);
 
             int variableIndex = FindVariableIndex(other);
             if (variableIndex == other.Length) return string.Empty;
@@ -23,15 +24,12 @@ namespace Polys
             var multiplyer = other.Substring(0, variableIndex);
             var variable = other.Substring(variableIndex);
 
-
             if (multiplyer != string.Empty)
-            {
-                multiplyer = (int.Parse(power) * int.Parse(multiplyer)).ToString();
-            }
+                multiplyer = (iPower * int.Parse(multiplyer)).ToString();
             else
-                multiplyer = power;
+                multiplyer = strPower;
 
-            var newPower = (int.Parse(power) - 1).ToString();
+            var newPower = (iPower - 1).ToString();
             if (newPower == "0")
                 variable = newPower = string.Empty;
             else if (newPower == "1")
@@ -39,9 +37,7 @@ namespace Polys
             else
                 newPower = "^" + newPower;
 
-            var result = multiplyer + variable + newPower;
-
-            return result;
+            return multiplyer + variable + newPower;
         }
 
         public static string Diff(string expression)
