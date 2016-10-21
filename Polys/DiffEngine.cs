@@ -46,7 +46,21 @@ namespace Polys
 
         public static string Diff(string expression)
         {
-            return SubReduce(expression);
+            var subExpressions = expression.Split('+');
+
+            var result = string.Empty;
+            foreach (var subExpression in subExpressions)
+            {
+                var reduced = SubReduce(subExpression);
+                if (reduced != string.Empty)
+                    if (result == string.Empty)
+                        result = reduced;
+                    else
+                        result += "+" + reduced;
+
+            }
+
+            return result;
         }
     }
 }
