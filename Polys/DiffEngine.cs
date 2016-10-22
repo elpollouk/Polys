@@ -9,6 +9,13 @@ namespace Polys
 
         // Matches following groups in a complete string:
         // (3)(x)^(2) - The last group being optional
+        // This regex results in 5 groups being returned if matched, for the above example, the groups would be:
+        // 0 - "3x^2"
+        // 1 - "3"
+        // 2 - "x"
+        // 3 - "^2"
+        // 4 - "2"
+        // As a result, we're only interested in groups 1, 2 and 4
         private static readonly Regex _parser = new Regex("^([0-9]*)([a-zA-Z]*)(\\^([0-9]+))?$");
 
         private static string SubReduce(string expression)
@@ -33,6 +40,7 @@ namespace Polys
                 multiplier = strPower;
 
             var newPower = (iPower - 1).ToString();
+            // Pretty up the output by reducing down redundant terms
             if (newPower == "0")
                 variable = newPower = string.Empty;
             else if (newPower == "1")
