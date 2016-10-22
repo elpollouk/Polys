@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Text.RegularExpressions;
+
 namespace Polys
 {
     public static class DiffEngine
     {
+        private static readonly Regex _parser = new Regex("^([0-9]*)([a-zA-Z]*)(\\^([0-9]+))?$");
+
         static int FindVariableIndex(string expression)
         {
             for (var i = 0; i < expression.Length; i++)
@@ -13,6 +17,10 @@ namespace Polys
 
         private static string SubReduce(string expression)
         {
+            if (expression == string.Empty) throw new FormatException("Attempted to evaluate an empty string");
+            var match = _parser.Match(expression);
+            if (match.Captures.Count == 0) throw new FormatException("Expression doesn't look to be well formed");
+
             var parts = expression.Split('^');
             var other = parts[0];
             var strPower = (parts.Length != 1) ? parts[1] : "1";

@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using Xunit;
 using Polys;
+using System;
 
 namespace PolysTests
 {
@@ -17,5 +18,17 @@ namespace PolysTests
         [InlineData("3x^2+x+1", "6x+1")]
         [InlineData("4x^2+5x+3", "8x+5")]
         public void Diff(string input, string expected) => DiffEngine.Diff(input).Should().Be(expected);
+
+        [Theory]
+        [InlineData("x2")]
+        [InlineData("3x^")]
+        [InlineData("x5x")]
+        [InlineData("x^y")]
+        [InlineData("")]
+        [InlineData("$%^")]
+        [InlineData("3x^2+")]
+        [InlineData("2x+4^")]
+        [InlineData("foo 3x^2 bar")]
+        public void Diff_InvalidInput(string input) => Assert.Throws<FormatException>(() => DiffEngine.Diff(input));
     }
 }
