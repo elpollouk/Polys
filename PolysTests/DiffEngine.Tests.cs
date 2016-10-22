@@ -9,6 +9,7 @@ namespace PolysTests
     {
         [Theory]
         [InlineData("2", "")]
+        [InlineData("2^3", "")]
         [InlineData("x", "1")]
         [InlineData("3x", "3")]
         [InlineData("x^2", "2x")]
@@ -24,6 +25,8 @@ namespace PolysTests
         [InlineData("3x^")]
         [InlineData("x5x")]
         [InlineData("x^y")]
+        [InlineData("^2")]
+        [InlineData("^")]
         [InlineData("")]
         [InlineData("$%^")]
         [InlineData("3x^2+")]

@@ -5,6 +5,7 @@ namespace Polys
 {
     public static class DiffEngine
     {
+        private const string _errorMessage = "Expression doesn't look to be well formed";
         private static readonly Regex _parser = new Regex("^([0-9]*)([a-zA-Z]*)(\\^([0-9]+))?$");
 
         static int FindVariableIndex(string expression)
@@ -17,25 +18,24 @@ namespace Polys
 
         private static string SubReduce(string expression)
         {
-            if (expression == string.Empty) throw new FormatException("Attempted to evaluate an empty string");
             var match = _parser.Match(expression);
-            if (match.Captures.Count == 0) throw new FormatException("Expression doesn't look to be well formed");
+            if (match.Groups.Count != 5) throw new FormatException(_errorMessage);
 
-            var parts = expression.Split('^');
-            var other = parts[0];
-            var strPower = (parts.Length != 1) ? parts[1] : "1";
+            var multiplier = match.Groups[1].Value;
+            var variable = match.Groups[2].Value;
+            var strPower = match.Groups[4].Value;
+
+            // Validate we have everything
+            if (multiplier == string.Empty && variable == string.Empty) throw new FormatException(_errorMessage);
+            if (variable == string.Empty) return string.Empty;
+
+            if (strPower == string.Empty) strPower = "1";
             var iPower = int.Parse(strPower);
 
-            int variableIndex = FindVariableIndex(other);
-            if (variableIndex == other.Length) return string.Empty;
-
-            var multiplyer = other.Substring(0, variableIndex);
-            var variable = other.Substring(variableIndex);
-
-            if (multiplyer != string.Empty)
-                multiplyer = (iPower * int.Parse(multiplyer)).ToString();
-            else
-                multiplyer = strPower;
+            if (multiplier != string.Empty)
+                multiplier = (iPower * int.Parse(multiplier)).ToString();
+            else 
+                multiplier = strPower;
 
             var newPower = (iPower - 1).ToString();
             if (newPower == "0")
@@ -45,7 +45,7 @@ namespace Polys
             else
                 newPower = "^" + newPower;
 
-            return multiplyer + variable + newPower;
+            return multiplier + variable + newPower;
         }
 
         public static string Diff(string expression)
