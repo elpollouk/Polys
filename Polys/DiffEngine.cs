@@ -6,15 +6,10 @@ namespace Polys
     public static class DiffEngine
     {
         private const string _errorMessage = "Expression doesn't look to be well formed";
+
+        // Matches following groups in a complete string:
+        // (3)(x)^(2) - The last group being optional
         private static readonly Regex _parser = new Regex("^([0-9]*)([a-zA-Z]*)(\\^([0-9]+))?$");
-
-        static int FindVariableIndex(string expression)
-        {
-            for (var i = 0; i < expression.Length; i++)
-                if (expression[i] > '9') return i; 
-
-            return expression.Length;
-        }
 
         private static string SubReduce(string expression)
         {
@@ -25,7 +20,7 @@ namespace Polys
             var variable = match.Groups[2].Value;
             var strPower = match.Groups[4].Value;
 
-            // Validate we have everything
+            // Validate we have everything we need for the calculation
             if (multiplier == string.Empty && variable == string.Empty) throw new FormatException(_errorMessage);
             if (variable == string.Empty) return string.Empty;
 
