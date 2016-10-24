@@ -12,6 +12,8 @@ namespace PolysTests
         [InlineData("2^3", "")]
         [InlineData("x", "1")]
         [InlineData("3x", "3")]
+        [InlineData("x^-1", "-x^-2")]
+        [InlineData("2x^-2", "-4x^-3")]
         [InlineData("x^2", "2x")]
         [InlineData("x^3", "3x^2")]
         [InlineData("4x^5", "20x^4")]
