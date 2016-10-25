@@ -20,6 +20,7 @@ namespace PolysTests
         [InlineData("2bob^3", "6bob^2")]
         [InlineData("3x^2+x+1", "6x+1")]
         [InlineData("4x^2+5x+3", "8x+5")]
+        [InlineData("x+x^-1", "1-x^-2")]
         public void Diff(string input, string expected) => DiffEngine.Diff(input).Should().Be(expected);
 
         [Theory]

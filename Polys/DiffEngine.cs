@@ -60,11 +60,10 @@ namespace Polys
             {
                 var reduced = SubReduce(subExpression);
                 if (reduced != string.Empty)
-                    if (result == string.Empty)
-                        result = reduced;
+                    if (result == string.Empty || reduced[0] == '-')
+                        result += reduced;
                     else
                         result += "+" + reduced;
-
             }
 
             return result;
