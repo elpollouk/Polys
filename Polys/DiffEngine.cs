@@ -16,7 +16,7 @@ namespace Polys
         // 3 - "^2"
         // 4 - "2"
         // As a result, we're only interested in groups 1, 2 and 4
-        private static readonly Regex _parser = new Regex("^([0-9]*)([a-zA-Z]*)(\\^(-?[0-9]+))?$");
+        private static readonly Regex _parser = new Regex("^(-?[0-9]*)([a-zA-Z]*)(\\^(-?[0-9]+))?$");
 
         private static string SubReduce(string expression)
         {
@@ -31,6 +31,7 @@ namespace Polys
             if (multiplier == string.Empty && variable == string.Empty) throw new FormatException(_errorMessage);
             if (variable == string.Empty) return string.Empty;
 
+            if (multiplier == "-") multiplier = "-1";
             if (strPower == string.Empty) strPower = "1";
             var iPower = int.Parse(strPower);
 
